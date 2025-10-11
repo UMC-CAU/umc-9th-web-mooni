@@ -1,4 +1,12 @@
-cd week-04 <br>
-cd mission-2 <br>
-npm install <br>
-npm run dev <br>
+## 패키지 매니저
+- npm
+
+## 실행 방법
+
+```bash
+cd week-04
+cd mission-2
+
+npm install
+
+npm run dev
