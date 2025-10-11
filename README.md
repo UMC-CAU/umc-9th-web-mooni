@@ -6,7 +6,7 @@
 
 ```bash
 cd week-04
-cd mission-2
+cd mission-3
 
 npm install
 
