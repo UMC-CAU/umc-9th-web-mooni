@@ -15,8 +15,6 @@ const LoginPage = () => {
     }
   }, [accessToken, navigate]);
 
-  const [showPassword, setShowPassword] = useState(false);
-
   const { values, errors, touched, getInputProps } =
     useForm<UserSigninInformation>({
       initialValue: {
@@ -32,6 +30,12 @@ const LoginPage = () => {
     } catch {
       alert("로그인에 실패했습니다.");
     }
+  };
+
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${API_URL}/v1/auth/google/login`;
   };
 
   // 오류가 있거나, 입력값이 비어있으면 버튼을 비활성화
@@ -76,7 +80,7 @@ const LoginPage = () => {
             <div className="relative">
               <input
                 {...getInputProps("password")}
-                type={showPassword ? "text" : "password"}
+                type={"password"}
                 placeholder="비밀번호를 입력하세요"
                 className={`w-full bg-zinc-800 text-white border-none rounded-lg px-4 py-3 pr-12 outline-none placeholder-gray-500 ${
                   errors?.password && touched?.password
@@ -84,13 +88,6 @@ const LoginPage = () => {
                     : ""
                 }`}
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
-              >
-                {showPassword ? "👁️" : "👁️‍🗨️"}
-              </button>
             </div>
             {errors?.password && touched?.password && (
               <p className="text-red-500 text-sm mt-1">{errors.password}</p>
@@ -101,7 +98,7 @@ const LoginPage = () => {
           <button
             type="button"
             onClick={handleSubmit}
-            disabled={isDisabled}
+            //disabled={isDisabled}
             className={`rounded-lg w-full py-3 text-white font-semibold transition ${
               isDisabled
                 ? "bg-gray-600 cursor-not-allowed"
@@ -110,10 +107,14 @@ const LoginPage = () => {
           >
             로그인
           </button>
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            className="rounded-lg w-full py-3 text-white font-semibold bg-blue-500 hover:bg-blue-600 transition"
+          >
+            <span>구글 로그인</span>
+          </button>
         </div>
-
-        {/* 하단 소셜 버튼 */}
-        <GoogleButton />
       </div>
     </div>
   );
