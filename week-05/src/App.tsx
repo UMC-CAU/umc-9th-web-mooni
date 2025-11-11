@@ -6,12 +6,16 @@ import LoginPage from "./pages/LoginPage";
 import HomeLayout from "./layouts/HomeLayout";
 import SignupPage from "./pages/SignupPage";
 import MyPage from "./pages/MyPage";
+import { AuthProvider } from "./context/AuthContext";
+import { RouteObject } from "react-router-dom";
+import ProtectedLayout from "./layouts/ProtectedLayout";
 
 // 1. 홈페이지
 // 2. 로그인 페이지
 // 3. 회원가입 페이지
 
-const router = createBrowserRouter([
+// protectedRoutes : 인증 필요한 라우트
+const publicRoutes: RouteObject[] = [
   {
     path: "/",
     element: <HomeLayout />,
@@ -20,13 +24,27 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "login", element: <LoginPage /> },
       { path: "signup", element: <SignupPage /> },
-      { path: "mypage", element: <MyPage /> },
     ],
   },
-]);
+];
+
+const protectedRoutes: RouteObject[] = [
+  {
+    path: "/",
+    element: <ProtectedLayout />,
+    errorElement: <NotFoundPage />,
+    children: [{ path: "my", element: <MyPage /> }],
+  },
+];
+
+const router = createBrowserRouter([...publicRoutes]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />;
+    </AuthProvider>
+  );
 }
 
 export default App;
